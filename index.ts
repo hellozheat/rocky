@@ -62,33 +62,10 @@ function hostnameOfMcpUrl(): string {
   }
 }
 
-/** e.g. devkit.zheat.xyz → zheat.xyz, mcp.soludev.tech → soludev.tech */
-function apexHost(hostname: string): string {
-  const parts = hostname.toLowerCase().split(".");
-  if (parts.length <= 2) {
-    return hostname.toLowerCase();
-  }
-  return parts.slice(-2).join(".");
-}
-
-/** Brand logo at https://{apex}/logo.jpg (devkit.zheat.xyz → https://zheat.xyz/logo.jpg). */
-function logoUrlForHostname(hostname: string): string {
-  const host = hostname.toLowerCase();
-  const fallbackApex = process.env.DEVKIT_LOGO_APEX?.trim() || "zheat.xyz";
-
-  if (host === "localhost" || host === "127.0.0.1") {
-    return `https://${fallbackApex}/logo.jpg`;
-  }
-  if (host.endsWith(".mcp-use.com") || host === "mcp-use.com") {
-    return `https://${fallbackApex}/logo.jpg`;
-  }
-  return `https://${apexHost(host)}/logo.jpg`;
-}
-
 const mcpUrlHost = hostnameOfMcpUrl();
-/** Must be absolute — relative paths become baseUrl + /mcp-use/public/… */
-const DEVKIT_LOGO_URL =
-  process.env.DEVKIT_LOGO_URL?.trim() || logoUrlForHostname(mcpUrlHost);
+
+/** Bundled logo in public/ — served at {origin}/mcp-use/public/logo.png on any host. */
+const DEVKIT_LOGO = "logo.png";
 
 const server = new MCPServer({
   name: "devkit",
@@ -100,22 +77,15 @@ const server = new MCPServer({
   ...(mcpUrlHost === "localhost" || mcpUrlHost === "127.0.0.1"
     ? { host: mcpUrlHost }
     : {}),
-  favicon: DEVKIT_LOGO_URL,
+  favicon: DEVKIT_LOGO,
   websiteUrl: "https://mcp-use.com",
   icons: [
     {
-      src: DEVKIT_LOGO_URL,
-      mimeType: "image/jpeg",
+      src: DEVKIT_LOGO,
+      mimeType: "image/png",
       sizes: ["512x512"],
     },
   ],
-});
-
-/** Optional redirect when something requests /logo.jpg on the MCP host */
-server.get("/logo.jpg", (c) => {
-  const host = c.req.header("host")?.split(":")[0] ?? hostnameOfMcpUrl();
-  const target = process.env.DEVKIT_LOGO_URL?.trim() || logoUrlForHostname(host);
-  return c.redirect(target, 302);
 });
 
 server.resource(
