@@ -1,0 +1,44 @@
+---
+description: Context, actions, reducers, selectors, services conventions
+globs: "**/context/**/*, **/actions/**/*, **/reducers/**/*, **/selectors/**/*, **/services/**/*"
+alwaysApply: false
+---
+
+# State and Data Layer Conventions
+
+Follow existing patterns. Do not introduce new patterns.
+
+## Context
+
+- Providers: `createContext` + `useReducer`
+- Each context exposes `use*` hook returning `[state, dispatch]`
+- `getContextStores()` (context/helper.ts) returns proxy with state/dispatch getters
+- Provider: `FC<React.PropsWithChildren<{}>>`, wraps `children`
+- Context providers use `getContextStores()` when they need other state
+
+## Actions
+
+- Signature: `(arg1, arg2, ..., dispatch: ContextDispatch) => void`
+- Import action types from `actions/actionTypes.ts`
+- Dispatch: `dispatch({ type, payload })`
+- Example: `setSelectedPlanId(assetManagerId, planId, assetManagerDispatch)`
+
+## Reducers
+
+- One reducer per domain; default export function
+- Import from `reducers/`; used by context providers
+
+## Selectors
+
+- Use **reselect** `createSelector`
+- Input selectors use `map.*` from `selectors/map.ts` (takes `ContextStores`)
+- Selectors take `contextStores` (or part) as argument
+- Keep selectors pure; no side effects
+
+## Services
+
+- Plain async functions; use `client.server.get/post/patch/delete`
+- Import `client` from `services/Client`, `config` from `config`
+- Shape: `export async function fetchX(...) { const result = await client.server.get(...); return result.data.value; }`
+- Actions that fetch call services and dispatch results
+

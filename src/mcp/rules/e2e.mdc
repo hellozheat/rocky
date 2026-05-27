@@ -1,0 +1,18 @@
+---
+description: E2E test conventions for Playwright. When writing or editing specs in e2e/.
+globs: "e2e/**/*.{ts,tsx}"
+alwaysApply: false
+---
+
+# E2E (Playwright) Conventions
+
+- **Specs live in** `e2e/` (e.g. `e2e/login.spec.ts`).
+- **Commands:** `yarn e2e` (all), `yarn e2e e2e/foo.spec.ts` (one file), `yarn e2e:log` (runs e2e and saves output to `reports/e2e-last-run.txt` for agent debugging), `yarn e2e:ui` (interactive). After a run, open the report with `yarn playwright show-report reports/playwright-report`.
+- **When fixing e2e failures:** If the user asks to fix e2e, read `reports/e2e-last-run.txt` for the latest run output (from `yarn e2e:log`); do not ask the user to paste errors.
+- **Run from project root** so the config is found. The Playwright VS Code/Cursor extension discovers `playwright.config.ts` (forwards to `e2e.config.ts`).
+- **Selectors:** Prefer user-facing: `getByRole`, `getByLabelText`, `getByText`; use `data-testid` only when necessary.
+- **Config:** `e2e.config.ts` at project root; set `baseURL` to app URL (e.g. `http://localhost:3000` when using `yarn dev`).
+- **Auth:** Match the app’s login flow (OAuth redirect, form login, or storage state). If the repo has `e2e/.env.example` and `auth.setup.ts`, follow them; save authenticated state under `e2e/.auth/` when the project already does. Do not hardcode real user credentials in specs.
+- **Setup:** If "Executable doesn't exist", run once: `yarn exec playwright install chromium`. Start the app with `yarn dev` or let Playwright start it (webServer in config, reuses server on port 3000).
+- **Running from Cursor (agent/terminal):** Cursor’s runner may use a separate cache, so Playwright can’t find the browsers you installed. To fix: (1) Run `yarn e2e` from your **system terminal** (outside Cursor), or (2) Point Playwright at your browser cache, then run e2e: on macOS `PLAYWRIGHT_BROWSERS_PATH=$HOME/Library/Caches/ms-playwright yarn e2e`; on Linux `PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright yarn e2e`. Use `yarn e2e:local` to try the macOS path from the project.
+

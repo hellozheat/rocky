@@ -1,0 +1,59 @@
+---
+description: React component conventions: atoms vs connected, FC, props
+globs: "**/components/**/*.tsx, **/pages/**/*.tsx"
+alwaysApply: false
+---
+
+# React Component Conventions
+
+Follow existing patterns. Do not introduce new patterns.
+
+## Atoms vs Connected
+
+- **atoms/** — Presentational only. No `getContextStores`. Receives data via props.
+- **connected/** — Uses `getContextStores()`, selectors, and actions.
+
+## Component Shape
+
+- Functional components only
+- Use `FC<Props>` or explicit prop types
+- `interface Props { ... }` above component
+- Default export for components
+- Barrel exports via `components/atoms/index.ts`
+
+## Connected Component Pattern
+
+```tsx
+const MyComponent: FC<Props> = ({ title }) => {
+  const contextStores = getContextStores();
+  const { featureState, assetManagerDispatch } = contextStores;
+  const data = getSelectorName(contextStores);
+
+  const handler = () => {
+    someAction(assetManagerId, payload, assetManagerDispatch);
+  };
+  // ...
+};
+```
+
+## Atoms Pattern
+
+```tsx
+interface Props {
+  title: string;
+  onAction?: () => void;
+}
+
+const MyAtom: FC<Props> = ({ title, onAction }) => {
+  return (/* JSX */);
+};
+
+export default MyAtom;
+```
+
+## UI and Forms
+
+- Use **Ant Design** components (Select, Modal, Table, etc.) instead of custom ones
+- Use **ModalForm** from `components/atoms/ModalForm` for form modals
+- Hooks at top level; extract complex logic to custom hooks when needed
+

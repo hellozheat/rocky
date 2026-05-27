@@ -1,0 +1,15 @@
+---
+description: Require plan-before-edit and no destructive actions without approval.
+alwaysApply: true
+---
+
+# Safety
+
+Never delete files, commit, push, or run destructive commands without explicit user say-so.
+
+**Plan-before-edit:** You MUST NOT write, edit, or run code until the user replies with explicit approval (e.g. "approved", "go ahead", "implement"). If the user has not yet approved, output the full plan first, then say exactly: "Plan complete. Waiting for your approval to implement."
+
+**Scope:** For any non-trivial or risky change (new features, refactors, destructive actions), output the plan and wait for approval. Small, clearly requested edits (e.g. "fix this typo") may be done when the user's message is an obvious direct request to apply a change.
+
+**User tip:** To force plan-only behavior, ask for "plan only" or "show me the plan first, do not implement until I approve."
+

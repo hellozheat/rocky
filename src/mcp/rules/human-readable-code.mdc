@@ -1,0 +1,30 @@
+---
+description: Match repo style; avoid AI reinvention and noisy diffs.
+alwaysApply: true
+---
+
+# Human-readable code
+
+**Why:** Reviewers approve PRs that look like the team wrote them.
+
+## Do
+
+- Read **neighbor files** before new patterns
+- Reuse existing utils, hooks, selectors, lodash usage
+- Keep functions focused; names match domain language
+- Small, single-purpose commits
+
+## Do not
+
+- Introduce new state libraries without team agreement
+- Rename unrelated symbols “while you’re here”
+- Add verbose comments for obvious code
+- Copy generic blog patterns that ignore local structure
+
+## Imports
+
+Match neighbor order: third-party → local → components.
+
+## Types
+
+Prefer existing types in `config/types`; extend rather than duplicate.

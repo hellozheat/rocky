@@ -1,0 +1,30 @@
+---
+description: Run pre_pr_quality_gate before every PR.
+alwaysApply: true
+---
+
+# PR quality gate
+
+**Why:** Catching lint/test/style issues before review saves everyone time.
+
+## Required
+
+Before `repo_open_pr`:
+
+```
+devkit → action: pre_pr_quality_gate, repoPath: <repo>
+```
+
+Only open PR when **`verdict`** is **`ready`**.
+
+## Fix order
+
+1. Blockers (lint fail, test fail, critical heuristics)
+2. Warnings (large diff, missing tests, style drift)
+3. Re-run gate
+
+## Resources
+
+- `devkit://pr-quality-rubric`
+- Agent `pr-quality-gate.md`
+- Prompt `devkit-before-pr`

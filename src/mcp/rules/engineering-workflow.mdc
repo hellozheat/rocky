@@ -1,0 +1,26 @@
+---
+description: How to pick profile, discover repo, and ship reviewable work.
+alwaysApply: true
+---
+
+# Engineering workflow
+
+**Why:** Structure-first work reduces review churn and token waste from blind edits.
+
+## Detection (see docs/architecture-profiles.md)
+
+1. Next.js `app/` → read `nextjs-developer.md`
+2. `src/components/atoms` → default layered React SPA
+3. API-only → `node-api-developer.md`
+4. Else graphify + neighbors — do not impose foreign layouts
+
+## Pipeline
+
+1. Discovery (`codebase-discovery.mdc`)
+2. `devkit` → `list_handbook`
+3. Implement with matching rules/agents
+4. `yarn lint:fix` / `yarn test` / `yarn build`
+5. `pre_pr_quality_gate` → `ready`
+6. `repo_open_pr` (needs `GITHUB_TOKEN`)
+
+Prefer **`devkit`** in chat over standalone tools unless debugging.

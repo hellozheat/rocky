@@ -1,0 +1,40 @@
+---
+description: Test conventions for Vitest and React Testing Library
+globs: "**/*.test.{ts,tsx}, **/*.spec.{ts,tsx}"
+alwaysApply: false
+---
+
+# Test Conventions
+
+Follow existing patterns. Do not introduce new patterns.
+
+## Query Priority
+
+Use in order: `getByRole` > `getByLabelText` > `getByPlaceholderText` > `getByText` > `getByTestId`
+
+## Patterns
+
+- **AAA**: Arrange, Act, Assert
+- **No dead code**: Remove unused helpers, fixtures, imports. Only add what tests use.
+- **MemoryRouter** when component uses `Link` from react-router-dom
+- **No redundant assertions**: `getByRole` throws if not found; skip `toBeInTheDocument()` before other asserts
+- **One logical concept per test**; multiple asserts OK for same concept
+
+## Structure
+
+- Colocate: `ComponentName.test.tsx` next to component
+- Use `describe` for component/hook name, `it` for behavior
+- Import as `ComponentName` or `XxxComponent` to avoid shadowing globals (e.g. `Error`)
+
+## test-utils
+
+- **`src/test-utils/render.tsx`** – Use `render` from here when the component uses `Link` (adds MemoryRouter). Re-exports `@testing-library/react`.
+- **`src/test-utils/fakeStores.ts`** – For connected components: `createFakeStores(overrides)` and mock context with `vi.mock('...context', () => ({ getContextStores: () => createFakeStores({ ... }) }))`. Use `fakeStores` for default minimal stores.
+
+## Vitest + RTL
+
+- `describe`, `it`, `expect` from Vitest
+- `vi.mock`, `vi.fn()`, `vi.spyOn` (never `jest.*`)
+- `render`, `screen`, `userEvent` from `@testing-library/react`
+- Test behavior users see, not implementation
+

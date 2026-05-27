@@ -1,0 +1,18 @@
+---
+description: Storybook conventions for writing component stories. When writing or editing .stories.tsx files.
+globs: "**/*.stories.{ts,tsx}"
+alwaysApply: false
+---
+
+# Storybook Conventions
+
+- **Colocate** stories with the component: `ComponentName.stories.tsx` next to `index.tsx`.
+- **Use CSF 3.0**: `Meta<typeof Component>`, `StoryObj<typeof Component>`, default export `meta`, named exports per story.
+- **Title** follows hierarchy, e.g. `Components/Atoms/Divider`, `Components/Connected/SettingBar`.
+- **Atoms** (under `components/atoms/`): No context decorator; pass props via `args`.
+- **Connected** (under `components/connected/`): Provide context via decorators; use project providers or mock `getContextStores` in `.storybook/preview.tsx` or per-story.
+- **One story per variant**: Default, Loading, Error, Empty, etc. Use `args` and optional `argTypes` for controls.
+- **Tags**: Use `tags: ['autodocs']` for auto-generated docs when appropriate.
+- **Parameters**: e.g. `layout: 'centered'` on meta or per story.
+- **Commands:** `yarn storybook` (dev), `yarn build-storybook` (static build).
+

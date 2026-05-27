@@ -1,0 +1,58 @@
+{
+  "name": "mcp-devkit",
+  "type": "module",
+  "version": "1.0.0",
+  "description": "MCP devkit: senior-dev handbook, graphify-first discovery, pre-PR quality gate",
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hellozheat/mcp-devkit.git"
+  },
+  "homepage": "https://github.com/hellozheat/mcp-devkit#readme",
+  "bugs": {
+    "url": "https://github.com/hellozheat/mcp-devkit/issues"
+  },
+  "keywords": [
+    "mcp",
+    "devkit",
+    "handbook",
+    "react",
+    "quality-gate"
+  ],
+  "main": "dist/index.js",
+  "scripts": {
+    "postinstall": "mcp-use generate-types || exit 0",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "build": "mcp-use build",
+    "dev": "mcp-use dev",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "start": "mcp-use start",
+    "sync:main": "./scripts/sync-main-and-rebuild.sh",
+    "deploy": "mcp-use deploy"
+  },
+  "dependencies": {
+    "@wqyjh/markdownify": "^1.2.0",
+    "dotenv": "^17.4.2",
+    "mcp-use": "latest",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router": "^7.13.0",
+    "tailwindcss": "^4.2.0",
+    "zod": "4.3.5"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.19.0",
+    "@types/node": "^25.3.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "eslint": "^9.19.0",
+    "eslint-plugin-simple-import-sort": "^12.1.1",
+    "tsx": "^4.21.0",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.22.0",
+    "vitest": "^4.1.5"
+  }
+}

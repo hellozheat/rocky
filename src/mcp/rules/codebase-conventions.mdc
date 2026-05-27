@@ -1,0 +1,58 @@
+---
+description: Core file structure, naming, and commands. Stay aligned with the codebase.
+alwaysApply: true
+---
+
+# Codebase Conventions
+
+Follow these patterns. Do not introduce new conventions or tools.
+
+## File Structure
+
+```
+src/
+├── components/atoms/       # Presentational (no getContextStores)
+├── components/connected/   # Uses context, selectors, actions
+├── context/                # Providers, useReducer, getContextStores
+├── actions/                # Action creators
+├── reducers/               # Reducers per domain
+├── selectors/              # Reselect selectors, map.ts
+├── services/               # API via client.server
+├── pages/                  # Route-level
+├── utils/                  # Pure helpers
+└── config/                 # types/, constants
+```
+
+## File Naming
+
+- Components: folder `PascalCase` with `index.tsx`
+- Styling: `styles.module.less` per component
+- Logic/utils: `camelCase.ts` (e.g. `assetManager`, `visibilityFilter`)
+- Types: `config/types/*.ts`, re-exported via `config/types/index.ts`
+
+## Imports
+
+- Use **relative paths** (`../../../selectors`, `../../atoms`)
+- Order: third-party (react, antd, lodash) → local (selectors, actions, context, utils) → components
+
+## Commands
+
+- `yarn dev` — dev server
+- `yarn build` — build
+- `yarn lint` — ESLint + tsc (run after changes)
+- `yarn test` — Vitest watch
+- `yarn test:run` — Vitest single run
+
+## MCP Tool Routing
+
+- Prefer the unified **`devkit`** tool for normal usage in chat.
+- Use standalone tools only for Inspector testing/debugging.
+- Run **`pre_pr_quality_gate`** before **`repo_open_pr`**.
+
+## Stack (typical layered SPA)
+
+- React, TypeScript, Vite
+- Ant Design; **antd `Form`** for forms (not proprietary dynamic-form packages)
+- LESS modules (`styles.module.less`), reselect, react-router
+- ESLint per project config
+

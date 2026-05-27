@@ -1,0 +1,17 @@
+---
+description: Graphify-focused discovery (see codebase-discovery.mdc for full policy including Understand Anything).
+alwaysApply: false
+---
+
+# Graphify & discovery
+
+**Canonical rule:** `codebase-discovery.mdc` (Understand Anything + graphify + fallback).
+
+## Graphify quick path
+
+1. `graphify update . --wiki` (when CLI available)
+2. Read `graphify-out/GRAPH_REPORT.md`
+3. `graphify query` for targeted questions
+4. `devkit://graphify-workflow`
+
+After edits: `graphify update .`

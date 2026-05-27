@@ -1,0 +1,28 @@
+---
+description: Understand the repo with Understand Anything (if present), graphify, or a feature-folder walkthrough before large grep.
+alwaysApply: true
+---
+
+# Codebase discovery
+
+**Why:** Random file reads waste tokens and miss how modules connect.
+
+## Before big changes
+
+1. If `.understand-anything/knowledge-graph.json` exists — use for structure/domains (read summaries; no auto `/understand` from MCP).
+2. Else `graphify update . --wiki` when CLI available; read `graphify-out/GRAPH_REPORT.md`.
+3. Use `graphify query` for targeted structural questions.
+4. Read `devkit://handbook/agents/codebase-discovery.md`, `devkit://graphify-workflow`, and optionally `devkit://understand-anything-workflow`.
+
+## After edits
+
+`graphify update .` to refresh the AST map. Do not run Understand Anything’s LLM pipeline unless the user requests it.
+
+## When neither graph exists
+
+Read one feature folder end-to-end before spreading changes.
+
+## MCP
+
+- `project_intelligence` for scripts/deps/git status
+- `safe-run` with `graphify` when allowed

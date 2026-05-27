@@ -1,0 +1,31 @@
+---
+description: LESS module conventions, class names, antd overrides
+globs: "**/*.less"
+alwaysApply: false
+---
+
+# Styling Conventions
+
+Follow existing patterns. Do not introduce new patterns.
+
+## Structure
+
+- One `styles.module.less` per component, colocated
+- Import: `import styles from './styles.module.less'`
+- Use: `className={styles.myClass}`
+- Avoid inline styles except for dynamic values
+
+## Class Names
+
+- **camelCase** for class names (`.planTitleContainer`, `.summaryTitleContainer`)
+- Semantic, component-scoped names
+
+## Variables
+
+- Use variables from `src/styles/variables.less` (e.g. `@black`, `@primary-color`)
+
+## Ant Design Overrides
+
+- Use `:global(.ant-select)` etc. for antd component overrides
+- Scope overrides inside a component class, e.g. `.planSelect :global(.ant-select-selector)`
+
