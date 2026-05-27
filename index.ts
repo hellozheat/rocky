@@ -71,25 +71,24 @@ function apexHost(hostname: string): string {
   return parts.slice(-2).join(".");
 }
 
-/** Brand logo on www.{apex}/logo.jpg for any custom domain (zheat.xyz, soludev.tech, …). */
+/** Brand logo at https://{apex}/logo.jpg (devkit.zheat.xyz → https://zheat.xyz/logo.jpg). */
 function logoUrlForHostname(hostname: string): string {
   const host = hostname.toLowerCase();
   const fallbackApex = process.env.DEVKIT_LOGO_APEX?.trim() || "zheat.xyz";
 
   if (host === "localhost" || host === "127.0.0.1") {
-    return `https://www.${fallbackApex}/logo.jpg`;
+    return `https://${fallbackApex}/logo.jpg`;
   }
   if (host.endsWith(".mcp-use.com") || host === "mcp-use.com") {
-    return `https://www.${fallbackApex}/logo.jpg`;
+    return `https://${fallbackApex}/logo.jpg`;
   }
-  if (host.startsWith("www.")) {
-    return `https://${host}/logo.jpg`;
-  }
-  return `https://www.${apexHost(host)}/logo.jpg`;
+  return `https://${apexHost(host)}/logo.jpg`;
 }
 
 const mcpUrlHost = hostnameOfMcpUrl();
-const DEVKIT_LOGO_URL = process.env.DEVKIT_LOGO_URL?.trim() || "/logo.jpg";
+/** Must be absolute — relative paths become baseUrl + /mcp-use/public/… */
+const DEVKIT_LOGO_URL =
+  process.env.DEVKIT_LOGO_URL?.trim() || logoUrlForHostname(mcpUrlHost);
 
 const server = new MCPServer({
   name: "devkit",
@@ -112,7 +111,7 @@ const server = new MCPServer({
   ],
 });
 
-/** Resolve logo from request Host so zheat.xyz, soludev.tech, etc. each get the right www.{apex}/logo.jpg */
+/** Optional redirect when something requests /logo.jpg on the MCP host */
 server.get("/logo.jpg", (c) => {
   const host = c.req.header("host")?.split(":")[0] ?? hostnameOfMcpUrl();
   const target = process.env.DEVKIT_LOGO_URL?.trim() || logoUrlForHostname(host);
