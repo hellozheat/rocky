@@ -62,27 +62,61 @@ function hostnameOfMcpUrl(): string {
   }
 }
 
+/** e.g. devkit.zheat.xyz → zheat.xyz, mcp.soludev.tech → soludev.tech */
+function apexHost(hostname: string): string {
+  const parts = hostname.toLowerCase().split(".");
+  if (parts.length <= 2) {
+    return hostname.toLowerCase();
+  }
+  return parts.slice(-2).join(".");
+}
+
+/** Brand logo on www.{apex}/logo.jpg for any custom domain (zheat.xyz, soludev.tech, …). */
+function logoUrlForHostname(hostname: string): string {
+  const host = hostname.toLowerCase();
+  const fallbackApex = process.env.DEVKIT_LOGO_APEX?.trim() || "zheat.xyz";
+
+  if (host === "localhost" || host === "127.0.0.1") {
+    return `https://www.${fallbackApex}/logo.jpg`;
+  }
+  if (host.endsWith(".mcp-use.com") || host === "mcp-use.com") {
+    return `https://www.${fallbackApex}/logo.jpg`;
+  }
+  if (host.startsWith("www.")) {
+    return `https://${host}/logo.jpg`;
+  }
+  return `https://www.${apexHost(host)}/logo.jpg`;
+}
+
 const mcpUrlHost = hostnameOfMcpUrl();
+const DEVKIT_LOGO_URL = process.env.DEVKIT_LOGO_URL?.trim() || "/logo.jpg";
 
 const server = new MCPServer({
   name: "devkit",
   title: "MCP devkit",
   version: "1.0.0",
   description:
-    "Handbook for the host LLM to implement better code, tests, and refactors in the user repo—plus `devkit` tools for discovery, repo checks, and pre_pr_quality_gate. Read devkit://how-it-works.",
+    "Senior-dev handbook + pre-PR quality gate (mcp-use). For code that looks good in review—layered React SPA playbooks, one devkit gateway, graphify-first discovery, and pre_pr_quality_gate. Gives the host LLM agents and rules to implement in the user's repo; devkit actions support discovery and validation. Read devkit://how-it-works.",
   baseUrl: process.env.MCP_URL || "http://localhost:3000",
   ...(mcpUrlHost === "localhost" || mcpUrlHost === "127.0.0.1"
     ? { host: mcpUrlHost }
     : {}),
-  favicon: "favicon.png",
+  favicon: DEVKIT_LOGO_URL,
   websiteUrl: "https://mcp-use.com",
   icons: [
     {
-      src: "icon.png",
-      mimeType: "image/png",
+      src: DEVKIT_LOGO_URL,
+      mimeType: "image/jpeg",
       sizes: ["512x512"],
     },
   ],
+});
+
+/** Resolve logo from request Host so zheat.xyz, soludev.tech, etc. each get the right www.{apex}/logo.jpg */
+server.get("/logo.jpg", (c) => {
+  const host = c.req.header("host")?.split(":")[0] ?? hostnameOfMcpUrl();
+  const target = process.env.DEVKIT_LOGO_URL?.trim() || logoUrlForHostname(host);
+  return c.redirect(target, 302);
 });
 
 server.resource(
