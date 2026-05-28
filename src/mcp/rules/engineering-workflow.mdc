@@ -9,10 +9,11 @@ alwaysApply: true
 
 ## Detection (see docs/architecture-profiles.md)
 
-1. Next.js `app/` → read `nextjs-developer.md`
-2. `src/components/atoms` → default layered React SPA
-3. API-only → `node-api-developer.md`
-4. Else graphify + neighbors — do not impose foreign layouts
+1. Next.js `app/` → `nextjs-developer.md`
+2. `src/domain/` + `src/application/` → `react-hexagonal.md` / `nestjs-hexagonal.md` / `fastapi-hexagonal.md` (match stack)
+3. `src/components/atoms` → legacy layered React SPA
+4. API-only (no UI) → `node-api-developer.md` or hexagonal API agents above
+5. Else graphify + neighbors — do not impose foreign layouts
 
 ## Pipeline
 

@@ -68,11 +68,11 @@ const mcpUrlHost = hostnameOfMcpUrl();
 const DEVKIT_LOGO = "logo.png";
 
 const server = new MCPServer({
-  name: "devkit",
-  title: "MCP devkit",
-  version: "1.0.0",
+  name: "Rocky",
+  title: "Rocky",
+  version: "2.0.0",
   description:
-    "Senior-dev handbook + pre-PR quality gate (mcp-use). For code that looks good in review—layered React SPA playbooks, one devkit gateway, graphify-first discovery, and pre_pr_quality_gate. Gives the host LLM agents and rules to implement in the user's repo; devkit actions support discovery and validation. Read devkit://how-it-works.",
+    "AI-assisted engineering workflow for teams and solo devs. Hexagonal React/NestJS/FastAPI playbooks, ai-driven skills, one devkit gateway, graphify-first discovery, and pre_pr_quality_gate. Gives the host LLM agents and rules to implement in the user's repo; devkit actions support discovery and validation. Read devkit://how-it-works.",
   baseUrl: process.env.MCP_URL || "http://localhost:3000",
   ...(mcpUrlHost === "localhost" || mcpUrlHost === "127.0.0.1"
     ? { host: mcpUrlHost }
@@ -166,47 +166,29 @@ server.resource(
   async () => text(TOKEN_COST_MD),
 );
 
-const HANDBOOK_RULE_FILES = [
-  "codebase-conventions.mdc",
-  "codebase-discovery.mdc",
-  "e2e.mdc",
-  "engineering-workflow.mdc",
-  "graphify-and-discovery.mdc",
-  "human-readable-code.mdc",
-  "pr-quality-gate.mdc",
-  "react-components.mdc",
-  "safety.mdc",
-  "state-and-data.mdc",
-  "storybook.mdc",
-  "styling.mdc",
-  "tests.mdc",
-] as const;
+/** Compact routing for prompts — full index via `devkit` → `list_handbook` (~1.6k tokens). */
+const HANDBOOK_READ_CAP =
+  "Read **at most 2–3** handbook resources for this task. Use `devkit` → `list_handbook` only to resolve URIs — **do not** fetch every entry in the index.";
 
-const HANDBOOK_AGENT_FILES = [
-  "code-reviewer.md",
-  "codebase-discovery.md",
-  "coverage-and-review-workflow.md",
-  "graphify-codebase-understanding.md",
-  "graphify-local-project.md",
-  "nextjs-developer.md",
-  "node-api-developer.md",
-  "playwright-writer.md",
-  "pr-quality-gate.md",
-  "react-developer.md",
-  "storybook-writer.md",
-  "tailwind-ui-developer.md",
-  "typescript-library-developer.md",
-  "understand-anything-onboarding.md",
-  "vitest-writer.md",
-] as const;
-
-const HANDBOOK_RULES_BLOCK = HANDBOOK_RULE_FILES.map(
-  (f) => `- \`devkit://handbook/rules/${f}\``,
-).join("\n");
-
-const HANDBOOK_AGENTS_BLOCK = HANDBOOK_AGENT_FILES.map(
-  (f) => `- \`devkit://handbook/agents/${f}\``,
-).join("\n");
+const HANDBOOK_ROUTER_BLOCK = [
+  "| If the task involves… | Agent | Rules |",
+  "|----------------------|-------|-------|",
+  "| React UI | `react-hexagonal` | `react-components`, `styling` |",
+  "| Next.js `app/` | `nextjs-developer` | `engineering-workflow` |",
+  "| Nest API | `nestjs-hexagonal` | `safety`, `tests` |",
+  "| FastAPI | `fastapi-hexagonal` | `safety`, `tests` |",
+  "| Layered Node API | `node-api-developer` | `safety`, `tests` |",
+  "| TS library / SDK | `typescript-library-developer` | `codebase-conventions` |",
+  "| Unit tests (React) | `vitest-writer` | `tests` |",
+  "| Unit tests (Nest) | `test-writer-nestjs` | `tests` |",
+  "| Unit tests (Python) | `test-writer-python` | `tests` |",
+  "| E2E | `playwright-writer` | `e2e` |",
+  "| Storybook | `storybook-writer` | `storybook` |",
+  "| Requirements / scope | `product-owner` | — |",
+  "| Code review | `code-reviewer` | `human-readable-code`, `tests` |",
+  "| Repo / graph discovery | `codebase-discovery` | `codebase-discovery` |",
+  "| Before PR | `pr-quality-gate` | `pr-quality-gate`, `human-readable-code` |",
+].join("\n");
 
 const LANGUAGE_OPTIONS = [
   "python",
@@ -237,10 +219,12 @@ server.prompt(
         ? `## Review focus\n\n${focus}\n\n---\n\n`
         : "";
     return text(
-      `Code review using **MCP devkit** handbook. Call **list_handbook** and read relevant resources.\n\n` +
-        `Start: \`devkit://handbook/agents/code-reviewer.md\`, \`human-readable-code.mdc\`, \`tests.mdc\`.\n\n` +
-        `## Handbook — rules\n\n${HANDBOOK_RULES_BLOCK}\n\n` +
-        `## Handbook — agents\n\n${HANDBOOK_AGENTS_BLOCK}\n\n` +
+      `Code review using **MCP devkit** handbook.\n\n` +
+        `Read only:\n` +
+        `- \`devkit://handbook/agents/code-reviewer.md\`\n` +
+        `- \`devkit://handbook/rules/human-readable-code.mdc\`\n` +
+        `- \`devkit://handbook/rules/tests.mdc\`\n\n` +
+        `${HANDBOOK_READ_CAP}\n\n` +
         `---\n\n${focusBlock}## Code (${language})\n\n${code}`,
     );
   },
@@ -250,7 +234,7 @@ server.prompt(
   {
     name: "devkit-start-task",
     description:
-      "Prime a task: list_handbook, read agents, implement in the user repo, use devkit tools for gate/tests. See devkit://how-it-works.",
+      "Prime a task: read how-it-works, codebase-discovery, 1–2 matching agents (router), implement in repo. See devkit://how-it-works.",
     schema: z.object({
       taskDescription: z.string().describe("What you are doing"),
     }),
@@ -258,23 +242,14 @@ server.prompt(
   async ({ taskDescription }) => {
     return text(
       `## Task\n\n${taskDescription}\n\n` +
-        `Read \`devkit://how-it-works\` first. Devkit is a **handbook**—you must **edit the user's codebase** (components, tests, refactors) using editor tools, not only call MCP actions.\n\n` +
-        `**Discovery:** list_handbook → \`codebase-discovery.md\` / graphify (see \`devkit://graphify-workflow\`) → read matching agents.\n\n` +
-        `| Goal | You should |\n` +
-        `|------|------------|\n` +
-        `| Better code / split components / architecture | Read agents below, then implement in files |\n` +
-        `| Tests | \`vitest-writer\` / \`playwright-writer\`; \`test_gap_finder\`; run tests in repo |\n` +
-        `| Before PR | \`pre_pr_quality_gate\` when repoPath is available |\n\n` +
-        `| Area | Agents | Rules |\n` +
-        `|------|--------|-------|\n` +
-        `| React UI | react-developer, tailwind-ui-developer | react-components, styling |\n` +
-        `| Next.js | nextjs-developer | engineering-workflow |\n` +
-        `| API | node-api-developer | safety, tests |\n` +
-        `| Repo / architecture / graph | codebase-discovery, graphify-local-project, understand-anything-onboarding | codebase-discovery |\n` +
-        `| Before PR | pr-quality-gate | pr-quality-gate, human-readable-code |\n\n` +
-        `## Rules\n\n${HANDBOOK_RULES_BLOCK}\n\n` +
-        `## Agents\n\n${HANDBOOK_AGENTS_BLOCK}\n\n` +
-        `**Before PR:** \`devkit\` action \`pre_pr_quality_gate\` — only \`repo_open_pr\` when verdict is \`ready\`.`,
+        `Read \`devkit://how-it-works\` (short). Devkit is a **handbook** — **edit the user's codebase** with editor tools, not only MCP actions.\n\n` +
+        `### Discovery\n` +
+        `1. Read \`devkit://handbook/agents/codebase-discovery.md\` and follow graphify / Understand Anything policy (\`devkit://graphify-workflow\`).\n` +
+        `2. ${HANDBOOK_READ_CAP}\n` +
+        `3. Pick **one row** from the router (plus \`codebase-discovery\` when needed) — do not read agents outside that row.\n\n` +
+        `### Router\n\n${HANDBOOK_ROUTER_BLOCK}\n\n` +
+        `### Before PR\n` +
+        `\`devkit\` → \`pre_pr_quality_gate\`; \`repo_open_pr\` only when verdict is \`ready\`.`,
     );
   },
 );
@@ -302,14 +277,14 @@ server.prompt(
 server.prompt(
   {
     name: "devkit-learn-the-stack",
-    description: "Onboard to the layered React SPA conventions in this handbook.",
+    description: "Onboard to hexagonal React and handbook conventions.",
     schema: z.object({}),
   },
   async () =>
     text(
-      `Learn the **layered React SPA** stack:\n\n` +
+      `Learn the **hexagonal React** stack:\n\n` +
         `1. \`devkit://handbook/rules/codebase-conventions.mdc\`\n` +
-        `2. \`devkit://handbook/agents/react-developer.md\`\n` +
+        `2. \`devkit://handbook/agents/react-hexagonal.md\`\n` +
         `3. \`devkit://handbook/rules/human-readable-code.mdc\`\n` +
         `4. \`devkit://graphify-workflow\` — explore one feature folder in the user's repo\n` +
         `5. Deep onboarding (if \`.understand-anything/knowledge-graph.json\` exists): \`understand-anything-onboarding.md\`, \`devkit://understand-anything-workflow\`\n` +

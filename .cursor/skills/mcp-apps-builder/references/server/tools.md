@@ -194,7 +194,7 @@ server.tool({ name: "personalise", schema: z.object({}) }, async (_p, ctx) => {
 **Key rules:**
 - Returns `undefined` on clients that don't send this metadata (Inspector, CLI, non-ChatGPT clients)
 - **Unverified / advisory** — self-reported by the client, not suitable for access control
-- For verified identity on servers that use `oauth`, use `ctx.auth` (not applicable to MCP devkit)
+- For verified identity on servers that use `oauth`, use `ctx.auth` (not applicable to Rocky)
 
 **ChatGPT multi-tenant model:**
 ChatGPT uses a single MCP session for ALL users of a deployed app. Use `ctx.client.user()` to distinguish callers:

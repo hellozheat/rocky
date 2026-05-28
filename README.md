@@ -1,29 +1,29 @@
-# MCP devkit — senior-dev handbook + quality gate (mcp-use)
+# Rocky — AI-assisted engineering workflow for teams and solo devs
 
-**Repository:** [github.com/hellozheat/mcp-devkit](https://github.com/hellozheat/mcp-devkit)
+**Repository:** [github.com/hellozheat/rocky](https://github.com/hellozheat/rocky)
 
-MCP server for developers who care how code **looks in review** — not just that it runs. Opinionated handbook (layered React SPA), one **devkit** gateway tool, **codebase discovery** (graphify + optional [Understand Anything](https://github.com/Lum1104/Understand-Anything)), and **pre_pr_quality_gate** before you open a PR.
+Rocky is an MCP server for developers who care about code quality, not just code that runs. It provides an opinionated handbook for agentic-assisted programming (hexagonal React + agents/skills), one `devkit` gateway tool, codebase discovery (graphify + optional [Understand Anything](https://github.com/Lum1104/Understand-Anything)), and `pre_pr_quality_gate` before opening a PR.
 
 **Public handbook server** — clients connect over HTTP (Cursor, Claude, or [mcp-use Inspector](https://mcp-use.com)).
 
-## How it works with your AI
+## How it works with your AI (agentic-assisted)
 
-Devkit does **not** replace your model. It gives the model **playbooks** (agents + rules) so it can:
+Devkit does **not** replace your model. It provides an **agentic-assisted** playbook (agents + rules) so the model can:
 
 - Write and refactor code in your repo (React, Next.js, API, Tailwind, libraries)
 - Add or update tests (Vitest, Playwright, Storybook)
 - Align architecture and run a **pre-PR quality gate**
 
-The model should call `list_handbook`, read the right agent docs, **then edit your files** in the IDE. MCP actions (`repo_test`, `pre_pr_quality_gate`, etc.) support discovery and validation—they are not a substitute for implementation.
+The model should call `list_handbook`, read the right agent docs, **then edit your files** in the IDE. MCP actions (`repo_test`, `pre_pr_quality_gate`, etc.) support discovery and validation—they are not a substitute for implementation. You stay in control of scope and approvals.
 
-Resource for models: **`devkit://how-it-works`**. Built-in prompt: **`devkit-start-task`**.
+Resource for models: `devkit://how-it-works`. Built-in prompt: `devkit-start-task`. Full value report (charts, phases, tokens): [below](#value-report--with-vs-without-mcp). Also: [docs/using-mcp-devkit-report.md](docs/using-mcp-devkit-report.md) · [Why agents & skills are split](docs/why-agents-and-skills-are-split.md).
 
 ### Example prompt (copy-paste)
 
 Paste this into chat after MCP is connected. Replace the bracketed parts with your goal and paths.
 
 ```
-Use MCP devkit: read devkit://how-it-works, list_handbook, and react-developer (and vitest-writer / playwright-writer if tests are needed). Rewrite [specific path or feature] in this repo to match the handbook—edit files directly in the workspace. Use devkit for change_scope_analyzer, repo_test, and pre_pr_quality_gate before we're done. Do not only call MCP tools without changing files.
+Use Rocky: read devkit://how-it-works, list_handbook, and react-hexagonal (and vitest-writer / playwright-writer if tests are needed). Rewrite [specific path or feature] in this repo to match the handbook—edit files directly in the workspace. Use devkit for change_scope_analyzer, repo_test, and pre_pr_quality_gate before we're done. Do not only call MCP tools without changing files.
 ```
 
 Scope one feature or folder at a time—not “rewrite the entire repo” in a single message.
@@ -31,9 +31,10 @@ Scope one feature or folder at a time—not “rewrite the entire repo” in a s
 ## Contents
 
 - [Features](#features)
+- [Value report — with vs without MCP](#value-report--with-vs-without-mcp)
 - [Who it's for](#who-its-for)
-- [How it works with your AI](#how-it-works-with-your-ai)
-- [Use the hosted server](#use-the-hosted-server)
+- [How it works with your AI](#how-it-works-with-your-ai-agentic-assisted)
+- [Connect Rocky to Cursor/Claude](#connect-rocky-to-cursorclaude)
 - [Deploy](#deploy)
 - [Development](#development)
 - [Senior workflow](#senior-workflow)
@@ -57,7 +58,7 @@ Built for teams and solo devs using AI assistants who want **reviewable PRs** in
   - A single gateway tool (`devkit`) handles many actions through one schema.
   - Fewer repetitive tool descriptions in the host’s tool catalog.
   - Result: more useful context per request at the same token budget.
-- **Pre-PR quality gate (devkit differentiator)**
+- **Pre-PR quality gate (Rocky differentiator)**
   - `pre_pr_quality_gate` runs lint, tests, and review heuristics before `repo_open_pr`.
   - Verdict `ready` / `not_ready` with blockers and warnings.
   - Result: fewer review rounds lost to style, lint, or missing tests.
@@ -83,7 +84,7 @@ Built for teams and solo devs using AI assistants who want **reviewable PRs** in
 
 Teams and solo devs using **Cursor**, **Claude**, or any MCP host who want assistants to follow shared conventions and **pass review** before opening a PR.
 
-## Use the hosted server
+## Connect Rocky to Cursor/Claude
 
 After you deploy (see [Deploy](#deploy)), point your MCP client at the **public HTTPS URL** of this server (your `MCP_URL` in production).
 
@@ -92,18 +93,18 @@ After you deploy (see [Deploy](#deploy)), point your MCP client at the **public 
 ```json
 {
   "mcpServers": {
-    "devkit": {
-      "url": "https://your-devkit-host.example.com/mcp"
+    "rocky": {
+      "url": "https://your-rocky-host.example.com/mcp"
     }
   }
 }
 ```
 
-Restart the editor after changing MCP config. In chat, ask naturally (“list the handbook”, “run the pre-PR gate on …”); the model calls the `devkit` tool on your hosted server.
+Restart the editor after changing MCP config. In chat, ask naturally (“list the handbook”, “run the pre-PR gate on …”); the model calls Rocky's `devkit` tool on your hosted server.
 
-**Inspector:** open `https://your-devkit-host.example.com/inspector` to try tools manually.
+**Inspector:** open `https://your-rocky-host.example.com/inspector` to try tools manually.
 
-**Repo paths:** hosted devkit does **not** read your laptop’s disk unless you configure the deployment with explicit roots and access. Most teams use devkit for the **handbook + gate guidance** in the client, and run lint/test in CI or locally. See [Install & security](docs/INSTALL.md).
+**Repo paths:** hosted Rocky does **not** read your laptop’s disk unless you configure the deployment with explicit roots and access. Most teams use Rocky for the **handbook + gate guidance** in the client, and run lint/test in CI or locally. See [Install & security](docs/INSTALL.md).
 
 ## Deploy
 
@@ -118,7 +119,7 @@ Set production env on the host (never commit `.env`):
 
 | Variable                    | Purpose                                                                 |
 | --------------------------- | ----------------------------------------------------------------------- |
-| `MCP_URL`                   | Public base URL clients use (e.g. `https://devkit.example.com`)         |
+| `MCP_URL`                   | Public base URL clients use (e.g. `https://rocky.example.com`)          |
 | `PORT`                      | Listen port on the host                                                 |
 | `DEVKIT_ALLOWED_REPO_ROOTS` | If repo tools run on the server, comma-separated allowed git roots only |
 | `GITHUB_TOKEN`              | Only if the server should call `repo_open_pr` on your behalf            |
@@ -131,8 +132,8 @@ Copy from [`config/env.example`](config/env.example). For a **public handbook-on
 ## Development
 
 ```bash
-git clone https://github.com/hellozheat/mcp-devkit.git
-cd mcp-devkit
+git clone https://github.com/hellozheat/rocky.git
+cd rocky
 yarn install
 yarn dev
 ```
@@ -150,7 +151,7 @@ yarn build
 End-to-end pipeline the handbook reinforces:
 
 1. **Discover** — `list_handbook`, graphify / Understand Anything (see [Codebase discovery](#codebase-discovery)), `project_intelligence`.
-2. **Match conventions** — rules + agent for your stack (`react-developer`, `nextjs-developer`, …).
+2. **Match conventions** — rules + agent for your stack (`react-hexagonal`, `nextjs-developer`, …).
 3. **Implement** — small, reviewable diffs; read neighbors first.
 4. **Verify** — `yarn lint:fix`, `yarn test`, `yarn build` in the target repo.
 5. **Gate** — `pre_pr_quality_gate` until `verdict: ready`.
@@ -190,7 +191,7 @@ Devkit exposes:
   - Quality: `pre-pr-quality-gate` (same logic as gateway `pre_pr_quality_gate`)
   - Web/repo helpers from `register-web-hq-tools` and `register-repo-actions`
 
-For automation and agent use, prefer `**devkit`** so one tool contract covers core actions.
+For automation and agent use, prefer `devkit` so one tool contract covers core actions.
 
 ## Reference: `devkit` actions
 
@@ -205,7 +206,7 @@ Every operation uses `action` plus action-specific fields. Source of truth: Zod 
 | `safe_run`                 | Run allowlisted command: `command`, optional `args`, `cwd`, `timeoutMs`.                                                |
 | `dependency_advisor`       | Flag risky `package.json` version specs (optional `projectRoot`, `structured`).                                         |
 | `change_scope_analyzer`    | Suggest checks/tests for a changed file (`targetPath`, optional `projectRoot`, `structured`).                           |
-| `**pre_pr_quality_gate**`  | **Lint, test, heuristics → `ready` / `not_ready`** (`repoPath`, optional `baseRef`, `maxFiles`, `force`, `structured`). |
+| `pre_pr_quality_gate`      | **Lint, test, heuristics → `ready` / `not_ready`** (`repoPath`, optional `baseRef`, `maxFiles`, `force`, `structured`). |
 | `web_release_notes`        | Release-oriented commit summary (`repoPath`, optional `lookbackHours`, `maxCommits`).                                   |
 | `web_incident_digest`      | Incident signals from recent changes (`repoPath`, optional `area`, `lookbackHours`).                                    |
 | `web_owner_lookup`         | CODEOWNERS or git contributors for a path (`repoPath`, `targetPath`).                                                   |
@@ -230,23 +231,23 @@ Every operation uses `action` plus action-specific fields. Source of truth: Zod 
 Registered under `devkit://handbook/agents/…` (also listed via `list_handbook`):
 
 
-| Agent                                | Use when                                      |
-| ------------------------------------ | --------------------------------------------- |
-| `codebase-discovery.md`              | Unified graphify + Understand Anything policy |
-| `graphify-local-project.md`          | graphify refresh after edits                  |
-| `graphify-codebase-understanding.md` | Deep graphify-only repo map                   |
-| `understand-anything-onboarding.md`  | Semantic graph already exists in repo         |
-| `react-developer.md`                 | Layered React SPA UI                          |
-| `nextjs-developer.md`                | Next.js `app/` projects                       |
-| `node-api-developer.md`              | API / backend                                 |
-| `tailwind-ui-developer.md`           | Tailwind UI                                   |
-| `typescript-library-developer.md`    | Shared TS packages                            |
-| `storybook-writer.md`                | Storybook CSF stories                         |
-| `vitest-writer.md`                   | Unit / component tests                        |
-| `playwright-writer.md`               | E2E tests                                     |
-| `code-reviewer.md`                   | Review playbook                               |
-| `coverage-and-review-workflow.md`    | Coverage + review pipeline                    |
-| `pr-quality-gate.md`                 | Pre-PR gate usage                             |
+| Agent                                | Use when                                                   |
+| ------------------------------------ | ---------------------------------------------------------- |
+| `codebase-discovery.md`              | Unified graphify + Understand Anything policy              |
+| `graphify-local-project.md`          | graphify refresh after edits                               |
+| `graphify-codebase-understanding.md` | Deep graphify-only repo map                                |
+| `understand-anything-onboarding.md`  | Semantic graph already exists in repo                      |
+| `react-hexagonal.md`                 | Hexagonal React UI (domain / application / infrastructure) |
+| `nextjs-developer.md`                | Next.js `app/` projects                                    |
+| `node-api-developer.md`              | API / backend                                              |
+| `tailwind-ui-developer.md`           | Tailwind UI                                                |
+| `typescript-library-developer.md`    | Shared TS packages                                         |
+| `storybook-writer.md`                | Storybook CSF stories                                      |
+| `vitest-writer.md`                   | Unit / component tests                                     |
+| `playwright-writer.md`               | E2E tests                                                  |
+| `code-reviewer.md`                   | Review playbook                                            |
+| `coverage-and-review-workflow.md`    | Coverage + review pipeline                                 |
+| `pr-quality-gate.md`                 | Pre-PR gate usage                                          |
 
 
 Rules live under `devkit://handbook/rules/…` (e.g. `codebase-discovery.mdc`, `react-components.mdc`, `pr-quality-gate.mdc`).
@@ -326,19 +327,19 @@ Built-in prompts (primed context for the model):
 | `devkit-start-task`      | Prime a feature/bugfix with handbook + discovery hints. |
 | `devkit-review-code`     | Code review with handbook rules.                        |
 | `devkit-before-pr`       | Pre-PR gate checklist.                                  |
-| `devkit-learn-the-stack` | Onboard to layered React SPA conventions.               |
+| `devkit-learn-the-stack` | Onboard to hexagonal React handbook conventions.        |
 
 
 ## How the LLM uses MCP (what happens under the hood)
 
-The **user** talks to the **host**; the **host** talks to the **LLM**; the **LLM** may call `**devkit`** on this MCP server; results return until the model answers.
+The **user** talks to the **host**; the **host** talks to the **LLM**; the **LLM** may call `devkit` on this MCP server; results return until the model answers.
 
 ```mermaid
 sequenceDiagram
   participant User
   participant Host as HostApp
   participant LLM
-  participant MCP as DevkitMCPServer
+  participant MCP as RockyMCPServer
 
   User->>Host: Natural language request
   Host->>LLM: Messages plus MCP tool catalog
@@ -359,6 +360,8 @@ sequenceDiagram
 ## Learn more
 
 - [Install & security](docs/INSTALL.md)
+- [Using Rocky (value report)](docs/using-mcp-devkit-report.md) — with vs without MCP, tokens, diary
+- [Why agents & skills are split](docs/why-agents-and-skills-are-split.md) — handbook architecture
 - [Token & cost breakdown](docs/token-cost-breakdown.md)
 - [Architecture profiles](docs/architecture-profiles.md)
 - [Senior workflow](docs/senior-workflow.md)

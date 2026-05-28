@@ -27,7 +27,7 @@ This file provides a NAVIGATION GUIDE ONLY. Before implementing any MCP server f
 
 ---
 
-## This repo: MCP devkit
+## This repo: Rocky
 
 [`index.ts`](../../../index.ts) is a **public handbook server** — tools, resources, and prompts only. **No `oauth` on `MCPServer`.** Optional `GITHUB_TOKEN` is for `repo_open_pr` (GitHub API). See [docs/INSTALL.md](../../../docs/INSTALL.md) for path allowlists and `safe_run`.
 

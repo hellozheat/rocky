@@ -125,7 +125,7 @@ server.use("mcp:tools/*", async (ctx, next) => {
 | `ctx.method` | MCP method name (e.g. `"tools/call"`) |
 | `ctx.params` | Request params — mutable |
 | `ctx.session` | Session ID when available |
-| `ctx.auth` | Present only when the server configures `oauth` on `MCPServer` (not used in MCP devkit) |
+| `ctx.auth` | Present only when the server configures `oauth` on `MCPServer` (not used in Rocky) |
 | `ctx.state` | `Map` for passing data across middleware in the same request |
 
 ### HTTP Middleware
@@ -219,7 +219,7 @@ Understanding the flow of a request:
 8. HTTP Response
 ```
 
-> **MCP devkit** does not configure `oauth`; requests are not gated by MCP bearer login.
+> **Rocky** does not configure `oauth`; requests are not gated by MCP bearer login.
 
 ### Example Flow
 

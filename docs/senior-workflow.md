@@ -11,7 +11,7 @@ End-to-end pipeline the handbook and MCP tools reinforce.
 ## 2. Match conventions
 
 - Read `codebase-conventions`, `react-components`, `human-readable-code`
-- Pick agent: `react-developer`, `nextjs-developer`, etc.
+- Pick agent: `react-hexagonal`, `nextjs-developer`, etc.
 
 ## 3. Implement small, reviewable diffs
 

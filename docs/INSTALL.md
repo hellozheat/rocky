@@ -1,6 +1,6 @@
 # Install & security (hosted)
 
-Source: [hellozheat/mcp-devkit](https://github.com/hellozheat/mcp-devkit)
+Source: [hellozheat/rocky](https://github.com/hellozheat/rocky)
 
 ## Requirements
 
@@ -37,4 +37,4 @@ Set `MCP_URL` to the public HTTPS origin clients will use.
 
 ## Clients
 
-Connect MCP hosts to your deployed URL (see [README](../README.md#use-the-hosted-server)). Use `yarn dev` or `yarn start` only when developing or running the server on your host.
+Connect MCP hosts to your deployed URL (see [README](../README.md#connect-rocky-to-cursorclaude)). Use `yarn dev` or `yarn start` only when developing or running the server on your host.

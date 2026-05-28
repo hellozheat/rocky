@@ -1,17 +1,17 @@
 {
-  "name": "mcp-devkit",
+  "name": "rocky",
   "type": "module",
-  "version": "1.0.0",
-  "description": "MCP devkit: senior-dev handbook, graphify-first discovery, pre-PR quality gate",
+  "version": "2.0.0",
+  "description": "Rocky: AI-assisted engineering workflow with handbook, graphify-first discovery, and pre-PR quality gate",
   "author": "",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hellozheat/mcp-devkit.git"
+    "url": "git+https://github.com/hellozheat/rocky.git"
   },
-  "homepage": "https://github.com/hellozheat/mcp-devkit#readme",
+  "homepage": "https://github.com/hellozheat/rocky#readme",
   "bugs": {
-    "url": "https://github.com/hellozheat/mcp-devkit/issues"
+    "url": "https://github.com/hellozheat/rocky/issues"
   },
   "keywords": [
     "mcp",

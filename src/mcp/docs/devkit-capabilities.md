@@ -1,4 +1,4 @@
-# MCP devkit — one tool
+# Rocky — one tool
 
 Use the **`devkit`** tool with a single `action` field. Users describe goals in chat; you choose `action` and parameters.
 
