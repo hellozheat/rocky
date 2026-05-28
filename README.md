@@ -48,6 +48,30 @@ Add to `~/.cursor/mcp.json`:
 - **Consistent implementation style**: shared agents and rules exposed as MCP resources.
 - **Safer repo operations**: path scoping via `DEVKIT_ALLOWED_REPO_ROOTS` and allowlisted command execution.
 
+## Snapshot: features, agents, skills
+
+### Features
+
+- `devkit` unified gateway + standalone repo/web helper tools.
+- `pre_pr_quality_gate` with `ready` / `not_ready` verdicts.
+- Codebase discovery flow: Understand Anything (if present) -> graphify -> folder walkthrough.
+- Handbook resources exposed over MCP (`devkit://handbook/...`).
+- Built-in prompts: `devkit-start-task`, `devkit-review-code`, `devkit-before-pr`, `devkit-learn-the-stack`.
+
+### Agents (24 total)
+
+- **Architecture/app**: `react-hexagonal`, `nextjs-developer`, `node-api-developer`, `nestjs-hexagonal`, `fastapi-hexagonal`, `typescript-library-developer`.
+- **Testing/quality**: `vitest-writer`, `playwright-writer`, `storybook-writer`, `test-writer-nestjs`, `test-writer-python`, `tester-qa`, `pr-quality-gate`, `code-reviewer`.
+- **Discovery/workflow**: `codebase-discovery`, `graphify-local-project`, `graphify-codebase-understanding`, `understand-anything-onboarding`, `coverage-and-review-workflow`.
+- **Support**: `product-owner`, `documentation-writer`, `code-simplifier`, `tailwind-ui-developer`, `k3s-devops`.
+
+### Skills (26 total, compact groups)
+
+- **Build by stack**: `react-hexagonal`, `nextjs-app-router`, `node-api-layered`, `nestjs-hexagonal`, `fastapi-hexagonal`, `typescript-library`.
+- **Testing/review**: `vitest-react`, `playwright-e2e`, `storybook-react`, `jest-nestjs`, `pytest-hexagonal`, `linter`, `githubpr`, `feature-implementation`.
+- **Ops/security/perf**: `trivyfix`, `sonarfix`, `popeyescan`, `performance-audit`, `dbanalyze`, `async-python-patterns`.
+- **Product/design**: `product-requirements`, `frontend-design`, `web-design-guidelines`, `brainstorming`, `tailwind-ui`, `vercel-react-best-practices`.
+
 ## Usage
 
 Use natural language in your host app; the model calls `devkit` actions under the hood.
