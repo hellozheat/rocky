@@ -8,7 +8,7 @@ Rocky is an MCP server for developers who care about code quality, not just code
 
 ## How it works with your AI (agentic-assisted)
 
-Devkit does **not** replace your model. It provides an **agentic-assisted** playbook (agents + rules) so the model can:
+Rocky does **not** replace your model. It provides an **agentic-assisted** playbook (agents + rules) so the model can:
 
 - Write and refactor code in your repo (React, Next.js, API, Tailwind, libraries)
 - Add or update tests (Vitest, Playwright, Storybook)
@@ -34,7 +34,7 @@ Scope one feature or folder at a time—not “rewrite the entire repo” in a s
 - [Value report — with vs without MCP](#value-report--with-vs-without-mcp)
 - [Who it's for](#who-its-for)
 - [How it works with your AI](#how-it-works-with-your-ai-agentic-assisted)
-- [Connect Rocky to Cursor/Claude](#connect-rocky-to-cursorclaude)
+- [Installation Guide](#installation-guide)
 - [Deploy](#deploy)
 - [Development](#development)
 - [Senior workflow](#senior-workflow)
@@ -84,27 +84,63 @@ Built for teams and solo devs using AI assistants who want **reviewable PRs** in
 
 Teams and solo devs using **Cursor**, **Claude**, or any MCP host who want assistants to follow shared conventions and **pass review** before opening a PR.
 
-## Connect Rocky to Cursor/Claude
+## Installation Guide
 
-After you deploy (see [Deploy](#deploy)), point your MCP client at the **public HTTPS URL** of this server (your `MCP_URL` in production).
+**MCP endpoint:** `https://rocky.zheat.xyz/mcp`  
+**Try in browser:** [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) (copy URL, client tabs, Inspector)  
+**Source:** [github.com/hellozheat/rocky](https://github.com/hellozheat/rocky)
 
-**Cursor** — `~/.cursor/mcp.json` (replace with your deployed URL; exact shape depends on your host’s transport — SSE/streamable HTTP per [mcp-use deploy](https://mcp-use.com)):
+Choose your preferred MCP client:
+
+### Claude Code
+
+Run this command in your terminal:
+
+```bash
+claude mcp add --transport http "rocky" https://rocky.zheat.xyz/mcp
+```
+
+### Cursor
+
+Add to `~/.cursor/mcp.json`:
 
 ```json
 {
   "mcpServers": {
     "rocky": {
-      "url": "https://your-rocky-host.example.com/mcp"
+      "url": "https://rocky.zheat.xyz/mcp"
     }
   }
 }
 ```
 
-Restart the editor after changing MCP config. In chat, ask naturally (“list the handbook”, “run the pre-PR gate on …”); the model calls Rocky's `devkit` tool on your hosted server.
+Restart Cursor. Or open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and use **Open in Cursor**.
 
-**Inspector:** open `https://your-rocky-host.example.com/inspector` to try tools manually.
+Manual path: **Settings → MCP → Add server** with the URL above.
 
-**Repo paths:** hosted Rocky does **not** read your laptop’s disk unless you configure the deployment with explicit roots and access. Most teams use Rocky for the **handbook + gate guidance** in the client, and run lint/test in CI or locally. See [Install & security](docs/INSTALL.md).
+### VS Code
+
+1. Open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and click **Open in VS Code**, or  
+2. **Settings → MCP → Add server** and set the URL to `https://rocky.zheat.xyz/mcp`
+
+### VS Code Insiders
+
+1. Open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and click **Open in VS Code Insiders**, or  
+2. **Settings → MCP → Add server** and set the URL to `https://rocky.zheat.xyz/mcp`
+
+### ChatGPT
+
+1. **Enable Developer Mode:** Settings → Connectors → Advanced → Developer mode  
+2. **Add the MCP server:** Connectors tab → add `https://rocky.zheat.xyz/mcp`  
+3. **In a chat:** pick the Rocky MCP server from the **+** menu
+
+### After connecting
+
+Confirm the server is **green** in your client (config ≠ connected). Then use the [example prompt](#example-prompt-copy-paste) or ask naturally (“list the handbook”, “run pre-PR gate on this repo”).
+
+**Inspector:** [rocky.zheat.xyz/inspector](https://rocky.zheat.xyz/inspector)
+
+**Self-host:** see [Deploy](#deploy) and use `{your-origin}/mcp` instead of `rocky.zheat.xyz`. Security notes: [Install & security](docs/INSTALL.md).
 
 ## Deploy
 

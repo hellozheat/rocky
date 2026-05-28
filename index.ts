@@ -19,6 +19,7 @@ import { registerMcpDeveloperExperience } from "./src/mcp/lib/register-mcp-dx.js
 import { registerPrePrQualityTools } from "./src/mcp/lib/register-pre-pr-quality.js";
 import { registerRepoActions } from "./src/mcp/lib/register-repo-actions.js";
 import { registerWebHqTools } from "./src/mcp/lib/register-web-hq-tools.js";
+import { registerRockyLandingMiddleware } from "./src/mcp/lib/rocky-landing-middleware.js";
 
 const projectRoot = dirname(fileURLToPath(import.meta.url));
 loadDotenv({ path: join(projectRoot, ".env"), quiet: true });
@@ -72,13 +73,13 @@ const server = new MCPServer({
   title: "Rocky",
   version: "2.0.0",
   description:
-    "AI-assisted engineering workflow for teams and solo devs. Hexagonal React/NestJS/FastAPI playbooks, ai-driven skills, one devkit gateway, graphify-first discovery, and pre_pr_quality_gate. Gives the host LLM agents and rules to implement in the user's repo; devkit actions support discovery and validation. Read devkit://how-it-works.",
+    "AI-assisted engineering workflow for teams and solo devs. Source: https://github.com/hellozheat/rocky — Hexagonal React/NestJS/FastAPI playbooks, ai-driven skills, one devkit gateway, graphify-first discovery, and pre_pr_quality_gate. Read devkit://how-it-works.",
   baseUrl: process.env.MCP_URL || "http://localhost:3000",
   ...(mcpUrlHost === "localhost" || mcpUrlHost === "127.0.0.1"
     ? { host: mcpUrlHost }
     : {}),
   favicon: DEVKIT_LOGO,
-  websiteUrl: "https://mcp-use.com",
+  websiteUrl: "https://github.com/hellozheat/rocky",
   icons: [
     {
       src: DEVKIT_LOGO,
