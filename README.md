@@ -1,4 +1,6 @@
-# Rocky — Agentic-assisted engineering for teams and solo devs
+# Rocky — Agentic-assisted engineering for teams and solo devs 
+
+[![Rocky hero](public/rocky.png)](https://github.com/hellozheat/rocky)
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg?style=for-the-badge)](LICENSE)
 [![MCP Endpoint](https://img.shields.io/badge/MCP-userocky.zheat.xyz%2Fmcp-1f6feb?style=for-the-badge)](https://userocky.zheat.xyz/mcp)
@@ -8,7 +10,7 @@
 
 Rocky is **agentic-assisted**, not autonomous: your model still writes code in your repo, and Rocky provides the standards, routing, and checks.
 
-## Quick connect
+## 🚀 Quick connect
 
 **MCP endpoint:** `https://userocky.zheat.xyz/mcp`  
 **Inspector:** [https://userocky.zheat.xyz/inspector](https://userocky.zheat.xyz/inspector)
@@ -56,11 +58,6 @@ Use natural language in your host app; the model calls `devkit` actions under th
 Use Rocky: read devkit://how-it-works, list_handbook, and the matching stack agent.
 Implement changes directly in this repo, then run pre_pr_quality_gate before we finish.
 Do not only call MCP tools without editing files.
-```
-
-```text
-Use Rocky for this task: read devkit://how-it-works, list_handbook, pick the right stack agent,
-implement changes directly in this repo, then run pre_pr_quality_gate before we finish.
 ```
 
 ### Typical flow
