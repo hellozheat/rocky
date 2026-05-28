@@ -86,8 +86,8 @@ Teams and solo devs using **Cursor**, **Claude**, or any MCP host who want assis
 
 ## Installation Guide
 
-**MCP endpoint:** `https://rocky.zheat.xyz/mcp`  
-**Try in browser:** [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) (copy URL, client tabs, Inspector)  
+**MCP endpoint:** `https://userocky.zheat.xyz/mcp`  
+**Try in browser:** [userocky.zheat.xyz/mcp](https://userocky.zheat.xyz/mcp) (copy URL, client tabs, Inspector)  
 **Source:** [github.com/hellozheat/rocky](https://github.com/hellozheat/rocky)
 
 Choose your preferred MCP client:
@@ -97,7 +97,7 @@ Choose your preferred MCP client:
 Run this command in your terminal:
 
 ```bash
-claude mcp add --transport http "rocky" https://rocky.zheat.xyz/mcp
+claude mcp add --transport http "rocky" https://userocky.zheat.xyz/mcp
 ```
 
 ### Cursor
@@ -108,39 +108,39 @@ Add to `~/.cursor/mcp.json`:
 {
   "mcpServers": {
     "rocky": {
-      "url": "https://rocky.zheat.xyz/mcp"
+      "url": "https://userocky.zheat.xyz/mcp"
     }
   }
 }
 ```
 
-Restart Cursor. Or open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and use **Open in Cursor**.
+Restart Cursor. Or open [userocky.zheat.xyz/mcp](https://userocky.zheat.xyz/mcp) and use **Open in Cursor**.
 
 Manual path: **Settings → MCP → Add server** with the URL above.
 
 ### VS Code
 
-1. Open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and click **Open in VS Code**, or  
-2. **Settings → MCP → Add server** and set the URL to `https://rocky.zheat.xyz/mcp`
+1. Open [userocky.zheat.xyz/mcp](https://userocky.zheat.xyz/mcp) and click **Open in VS Code**, or  
+2. **Settings → MCP → Add server** and set the URL to `https://userocky.zheat.xyz/mcp`
 
 ### VS Code Insiders
 
-1. Open [rocky.zheat.xyz/mcp](https://rocky.zheat.xyz/mcp) and click **Open in VS Code Insiders**, or  
-2. **Settings → MCP → Add server** and set the URL to `https://rocky.zheat.xyz/mcp`
+1. Open [userocky.zheat.xyz/mcp](https://userocky.zheat.xyz/mcp) and click **Open in VS Code Insiders**, or  
+2. **Settings → MCP → Add server** and set the URL to `https://userocky.zheat.xyz/mcp`
 
 ### ChatGPT
 
 1. **Enable Developer Mode:** Settings → Connectors → Advanced → Developer mode  
-2. **Add the MCP server:** Connectors tab → add `https://rocky.zheat.xyz/mcp`  
+2. **Add the MCP server:** Connectors tab → add `https://userocky.zheat.xyz/mcp`  
 3. **In a chat:** pick the Rocky MCP server from the **+** menu
 
 ### After connecting
 
 Confirm the server is **green** in your client (config ≠ connected). Then use the [example prompt](#example-prompt-copy-paste) or ask naturally (“list the handbook”, “run pre-PR gate on this repo”).
 
-**Inspector:** [rocky.zheat.xyz/inspector](https://rocky.zheat.xyz/inspector)
+**Inspector:** [userocky.zheat.xyz/inspector](https://userocky.zheat.xyz/inspector)
 
-**Self-host:** see [Deploy](#deploy) and use `{your-origin}/mcp` instead of `rocky.zheat.xyz`. Security notes: [Install & security](docs/INSTALL.md).
+**Self-host:** see [Deploy](#deploy) and use `{your-origin}/mcp` instead of `userocky.zheat.xyz`. Security notes: [Install & security](docs/INSTALL.md).
 
 ## Deploy
 
