@@ -19,7 +19,6 @@ import { registerMcpDeveloperExperience } from "./src/mcp/lib/register-mcp-dx.js
 import { registerPrePrQualityTools } from "./src/mcp/lib/register-pre-pr-quality.js";
 import { registerRepoActions } from "./src/mcp/lib/register-repo-actions.js";
 import { registerWebHqTools } from "./src/mcp/lib/register-web-hq-tools.js";
-import { registerRockyLandingMiddleware } from "./src/mcp/lib/rocky-landing-middleware.js";
 
 const projectRoot = dirname(fileURLToPath(import.meta.url));
 loadDotenv({ path: join(projectRoot, ".env"), quiet: true });
