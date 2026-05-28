@@ -50,6 +50,14 @@ Add to `~/.cursor/mcp.json`:
 
 Use natural language in your host app; the model calls `devkit` actions under the hood.
 
+### Example prompt
+
+```text
+Use Rocky: read devkit://how-it-works, list_handbook, and the matching stack agent.
+Implement changes directly in this repo, then run pre_pr_quality_gate before we finish.
+Do not only call MCP tools without editing files.
+```
+
 ```text
 Use Rocky for this task: read devkit://how-it-works, list_handbook, pick the right stack agent,
 implement changes directly in this repo, then run pre_pr_quality_gate before we finish.
